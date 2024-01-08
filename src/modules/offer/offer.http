@@ -1,2 +1,109 @@
-GET http://localhost:4000/offers HTTP/1.1
+## Создание предложения
+
+POST http://localhost:228/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+{
+  "name": "TestTestTest",
+  "description": "test description test description",
+  "city": "Paris",
+  "date": "2023-01-03T13:10:22.728Z",
+  "isPremium": true,
+  "isFavourite": false,
+  "rating": 3.2,
+  "housingType": "House",
+  "roomsCount": 1,
+  "guestsCount": 8,
+  "price": 5000,
+  "facilities": [
+    "Fridge"
+  ],
+  "previewImg": "test.jpg",
+  "images": [
+    "test1.png",
+    "test2.png",
+    "test3.png",
+    "test4.png",
+    "test5.png",
+    "test6.png"
+  ],
+  "coordinates": {
+    "latitude": 48.8566,
+    "longitude": 2.3522
+  }
+}
+
+###
+
+## Все предложения
+
+GET http://localhost:228/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+###
+
+## Полная информация о предложении
+
+GET http://localhost:228/offers/659c59e4ea8c8c89039e236f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+###
+
+## Обловление предложения
+
+PATCH  http://localhost:228/offers/659c59e4ea8c8c89039e236f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+{
+  "price": 2000,
+  "roomsCount": 5
+}
+
+###
+
+## Удаление предложения
+
+DELETE http://localhost:228/offers/659c435712d0e6fa049ef3e4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+###
+
+## Все премиум предложения одного города
+
+GET http://localhost:228/offers/premium/Paris HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+###
+
+## Добавить в предожение избранное
+
+POST http://localhost:228/offers/favorites/659c435712d0e6fa049ef3e4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+###
+
+## Получить избранные предложения
+
+GET http://localhost:228/offers/favorites HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+###
+
+## Удалить предложение из избранных
+
+DELETE http://localhost:228/offers/favorites/659c435712d0e6fa049ef3e4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+
+###
+
+## Отправить картинку по предложению
+
+POST http://localhost:228/offers/659c3fed64a16372b1eacf2f/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
 Content-Type: application/json

@@ -4,22 +4,28 @@ import { Housing } from '../../../types/housing.type.js';
 
 export class OfferRdo {
   @Expose()
+  public id!: string;
+
+  @Expose()
   public name!: string;
 
   @Expose()
-  public publicationDate!: Date;
+  public description!: string;
+
+  @Expose()
+  public date!: Date;
 
   @Expose()
   public city!: City;
 
   @Expose()
-  public previewImage!: string;
+  public previewImg!: string;
 
   @Expose()
-  public premium!: boolean;
+  public isPremium!: boolean;
 
   @Expose()
-  public favorite!: boolean;
+  public isFavorite!: boolean;
 
   @Expose()
   public rating!: number;
@@ -28,7 +34,7 @@ export class OfferRdo {
   public housingType!: Housing;
 
   @Expose()
-  public cost!: number;
+  public price!: number;
 
   @Expose()
   public commentsCount!: number;

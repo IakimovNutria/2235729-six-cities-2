@@ -37,7 +37,7 @@ export default class UserController extends Controller {
       method: HttpMethod.Post,
       handler: this.register,
       middlewares: [
-        new ValidateDtoMiddleware(CreateUserDto)
+        new ValidateDtoMiddleware(CreateUserDto),
       ],
     });
     this.addRoute({
@@ -45,7 +45,7 @@ export default class UserController extends Controller {
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [
-        new ValidateDtoMiddleware(LoginUserDto)
+        new ValidateDtoMiddleware(LoginUserDto),
       ],
     });
     this.addRoute({
@@ -53,7 +53,7 @@ export default class UserController extends Controller {
       method: HttpMethod.Get,
       handler: this.checkAuthenticate,
       middlewares: [
-        new PrivateRouteMiddleware()
+        new PrivateRouteMiddleware(),
       ],
     });
     this.addRoute({
@@ -63,7 +63,7 @@ export default class UserController extends Controller {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('userId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar')
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });
   }

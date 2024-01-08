@@ -34,7 +34,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     min: [100, 'Min cost is 100'],
     max: [100000, 'Max cost is 100000']
   })
-  public cost!: number;
+  public price!: number;
 
   @prop({
     required: true,
@@ -55,7 +55,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     min: [1, 'Min count of guests is 1'],
     max: [10, 'Max count of guests is 10']
   })
-  public guestCount!: number;
+  public guestsCount!: number;
 
   @prop({
     required: true,
@@ -82,24 +82,24 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     ref: UserEntity,
     required: true
   })
-  public userId!: Ref<UserEntity>;
+  public author!: Ref<UserEntity>;
 
   @prop({
     required: true,
     default: false
   })
-  public premium!: boolean;
+  public isPremium!: boolean;
 
   @prop({
     required: true,
     match: [/.*\.(?:jpg|png)/, 'Image must be jpg or png']
   })
-  public previewImage!: string;
+  public previewImg!: string;
 
   @prop({
     required: true
   })
-  public publicationDate!: Date;
+  public date!: Date;
 
   @prop({
     required: true,
@@ -113,7 +113,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     min: [1, 'Min room count is 1'],
     max: [8, 'Max room count is 8']
   })
-  public roomCount!: number;
+  public roomsCount!: number;
 
   @prop({
     required: true,

@@ -14,6 +14,6 @@ export const CreateCommentMessages = {
   },
   rating: {
     invalidFormat: 'rating must be a number',
-    lengthField: 'min length is 1, max is 5',
+    invalidNumber: 'min rating is 1, max is 5',
   },
 } as const;

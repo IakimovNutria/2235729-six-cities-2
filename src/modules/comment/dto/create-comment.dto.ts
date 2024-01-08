@@ -1,4 +1,12 @@
-import { IsDateString, IsMongoId, IsNumber, IsString, Length } from 'class-validator';
+import {
+  IsDateString,
+  IsMongoId,
+  IsNumber,
+  IsString,
+  Length,
+  Min,
+  Max,
+} from 'class-validator';
 import { CreateCommentMessages } from './create-comment-message.js';
 
 
@@ -10,13 +18,13 @@ export class CreateCommentDto {
   @IsMongoId({ message: CreateCommentMessages.offerId.invalidFormat })
   public offerId!: string;
 
-  @IsMongoId({ message: CreateCommentMessages.userId.invalidFormat })
-  public userId!: string;
+  public author!: string;
 
   @IsDateString({}, { message: CreateCommentMessages.date.invalidFormat })
   public date!: Date;
 
-  @IsNumber({}, { message: CreateCommentMessages.rating.invalidFormat })
-  @Length(1, 5, { message: CreateCommentMessages.rating.lengthField })
+  @IsNumber({ maxDecimalPlaces: 1 }, { message: CreateCommentMessages.rating.invalidFormat })
+  @Min(1, { message: CreateCommentMessages.rating.invalidNumber })
+  @Max(5, { message: CreateCommentMessages.rating.invalidNumber })
   public rating!: number;
 }

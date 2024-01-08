@@ -1,51 +1,56 @@
 export const CreateOfferMessage = {
   name: {
-    minLength: 'Minimum title length must be 10',
-    maxLength: 'Maximum title length must be 100',
+    minLength: 'minimum title length must be 10',
+    maxLength: 'maximum title length must be 100',
   },
   description: {
-    minLength: 'Minimum description length must be 20',
-    maxLength: 'Maximum description length must be 1024',
+    minLength: 'minimum description length must be 20',
+    maxLength: 'maximum description length must be 1024',
   },
   date: {
-    invalidFormat: 'Date must be a valid ISO date',
+    invalidFormat: 'date must be a valid ISO date',
   },
   city: {
-    invalidFormat: 'City must be a valid a string',
+    invalidFormat: 'city must be a valid a string',
   },
   previewImg: {
-    invalidFormat: 'previewImg must be a valid a string',
+    invalidFormat: 'previewImg should be .png, .jpeg or .jpg',
   },
   images: {
-    invalidFormat: 'Field images must be an array',
+    invalidFormat: 'images must be an array',
+    invalidItem: 'each image should be .png, .jpeg or .jpg',
+    invalidCount: 'should be 6 images',
   },
-  flagIsPremium: {
-    invalidFormat: 'flagIsPremium must be a boolean',
+  isPremium: {
+    invalidFormat: 'isPremium must be a boolean',
   },
-  flagIsFavourites: {
-    invalidFormat: 'flagIsFavourites must be a boolean',
+  isFavourites: {
+    invalidFormat: 'isFavourites must be a boolean',
   },
   rating: {
     invalidFormat: 'rating must be a number',
-    lengthField: 'min length is 1, max is 5',
+    invalidNumber: 'min rating is 1, max is 5',
   },
-  typeHousing: {
-    invalidFormat: 'TypeHousing must be a valid a string',
+  housingType: {
+    invalidFormat: 'housingType must be a valid a string',
+    invalidString: 'housingType must be one of housing',
   },
-  countRooms: {
-    invalidFormat: 'countRooms must be an integer',
-    lengthField: 'min length is 1, max is 8',
+  roomsCount: {
+    invalidFormat: 'roomsCount must be an integer',
+    invalidNumber: 'min count of rooms is 1, max is 8',
   },
-  countPeople: {
-    invalidFormat: 'countPeople must be an integer',
-    lengthField: 'min length is 1, max is 10',
+  guestsCount: {
+    invalidFormat: 'guestsCount must be an integer',
+    invalidNumber: 'min count of guests is 1, max is 10',
   },
   price: {
     invalidFormat: 'price must be an integer',
-    lengthField: 'min length is 100, max is 100000',
+    invalidNumber: 'min length is 100, max is 100000',
   },
-  conveniences: {
-    invalidFormat: 'conveniences must be a valid a string',
+  facilities: {
+    invalidFormat: 'facilities must be an array',
+    notEmpty: 'there should be at least 1 facility',
+    invalidItem: 'type must be one of the facilities',
   },
   author: {
     invalidId: 'userId field must be a valid id',

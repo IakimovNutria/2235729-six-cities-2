@@ -13,17 +13,20 @@ export default class UserService implements UserServiceInterface {
 
   constructor(
     @inject(Component.Logger) private readonly logger: LoggerType,
-    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
+    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,
+    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
   ) { }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-    const offers = await this.userModel.findById(userId).select('favorite');
+    const user = await this.userModel.findById(userId);
+    const offers = user?.favorite;
+
     if (!offers) {
       return [];
     }
 
-    return this.userModel
-      .find({ _id: { $in: offers.favorite } });
+    return this.offerModel
+      .find({ _id: { $in: offers } });
   }
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
