@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from './middleware.types.js';
 
 export class ValidateDtoMiddleware implements Middleware {
-  constructor(private dto: ClassConstructor<object>) {}
+  constructor(private dto: ClassConstructor<object>) { }
 
   public async execute({ body }: Request, res: Response, next: NextFunction): Promise<void> {
     const dtoInstance = plainToInstance(this.dto, body);

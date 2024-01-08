@@ -9,6 +9,8 @@ import { getConnectionString } from '../core/helpers/common.js';
 import { ControllerType } from '../core/controller/controller.type.js';
 import { ExceptionFilter } from '../core/http/exception-filter.type.js';
 import { Controller } from '../core/controller/controller.js';
+import { AuthExceptionFilter } from '../core/auth/auth-exceptions-filter.js';
+import { ParseTokenMiddleware } from '../core/middleware/parse-token.middleware.js';
 
 @injectable()
 export default class Application {
@@ -21,6 +23,7 @@ export default class Application {
     @inject(Component.UserController) private userController: ControllerType,
     @inject(Component.ExceptionFilter) private readonly appExceptionFilter: ExceptionFilter,
     @inject(Component.CommentController) private readonly commentController: Controller,
+    @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: AuthExceptionFilter,
   ) {
     this.expressApplication = express();
   }
@@ -28,11 +31,13 @@ export default class Application {
   private async _initMiddleware() {
     this.logger.info('Мидлвары инициализируется');
 
+    const authMiddleware = new ParseTokenMiddleware(this.settings.get('JWT_SECRET'));
     this.expressApplication.use(express.json());
     this.expressApplication.use(
       '/upload',
       express.static(this.settings.get('UPLOAD_DIRECTORY'))
     );
+    this.expressApplication.use(authMiddleware.execute.bind(authMiddleware));
 
     this.logger.info('Мидлвары успешно инициализированы');
   }
@@ -55,6 +60,7 @@ export default class Application {
   }
 
   private async _initExceptionFilters() {
+    this.expressApplication.use(this.authExceptionFilter.catch.bind(this.authExceptionFilter));
     this.expressApplication.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter));
   }
 

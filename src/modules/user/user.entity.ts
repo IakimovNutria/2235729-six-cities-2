@@ -36,8 +36,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   @prop({
     required: true,
-    minlength: [6, 'Min length for password is 6'],
-    maxlength: [12, 'Max length for password is 12']
+    default: '',
   })
   public password?: string;
 
@@ -63,6 +62,10 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   public getPassword() {
     return this.password;
+  }
+
+  public checkPassword(password: string, salt: string): boolean {
+    return createSHA256(password, salt) === this.password;
   }
 }
 

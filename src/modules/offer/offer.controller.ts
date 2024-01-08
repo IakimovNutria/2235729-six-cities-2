@@ -15,6 +15,8 @@ import { ValidateObjectIdMiddleware } from '../../core/middleware/validate-objec
 import { ValidateDtoMiddleware } from '../../core/middleware/validate-dto.middleware.js';
 import { ParamOfferId } from '../../types/param-offerid.type.js';
 import { DocumentExistsMiddleware } from '../../core/middleware/document-exists.js';
+import { PrivateRouteMiddleware } from '../../core/middleware/private-route.middleware.js';
+import UserService from '../user/user.service.js';
 
 @injectable()
 export class OfferController extends Controller {
@@ -22,17 +24,28 @@ export class OfferController extends Controller {
     @inject(Component.Logger) logger: LoggerType,
     @inject(Component.OfferService) private readonly offerService: OfferServiceInterface,
     @inject(Component.CommentService) private readonly commentService: CommentService,
+    @inject(Component.UserService) private readonly userService: UserService,
   ) {
     super(logger);
 
     this.logger.info('Register routes for OfferController…');
 
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ]
+    });
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+      middlewares: [
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ]
     });
     this.addRoute({
       path: '/:offerId',
@@ -48,6 +61,7 @@ export class OfferController extends Controller {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -57,11 +71,50 @@ export class OfferController extends Controller {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
     });
+    this.addRoute({
+      path: '/premium/:city',
+      method: HttpMethod.Get,
+      handler: this.getPremium,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+      ]
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Post,
+      handler: this.addFavourite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId')
+      ]
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.removeFavourite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'RentalOffer', 'offerId')]
+    });
+
+    this.addRoute({
+      path: '/favorites',
+      method: HttpMethod.Get,
+      handler: this.getFavourites,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+      ]
+    });
+
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,
@@ -123,5 +176,20 @@ export class OfferController extends Controller {
   public async getComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
+  }
+
+  public async addFavourite({ params, tokenPayload }: Request, res: Response): Promise<void> {
+    await this.userService.addToFavoritesById(tokenPayload.id, params.offerId);
+    this.noContent(res, { message: 'Added to favourites' });
+  }
+
+  public async removeFavourite({ params, tokenPayload }: Request, res: Response): Promise<void> {
+    await this.userService.removeFromFavoritesById(tokenPayload.id, params.offerId);
+    this.noContent(res, { message: 'Removed from favourites' });
+  }
+
+  public async getFavourites({ tokenPayload }: Request, _res: Response): Promise<void> {
+    const offers = await this.userService.findFavorites(tokenPayload.id);
+    this.ok(_res, fillDTO(OfferRdo, offers));
   }
 }
