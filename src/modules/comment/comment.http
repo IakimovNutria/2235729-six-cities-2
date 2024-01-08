@@ -1,0 +1,19 @@
+## Создать комментарий
+
+POST http://localhost:228/comments/659c4eb854b34e967a0c934b HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q2QHRlc3QudGVzdCIsImZpcnN0bmFtZSI6IlRlc3QiLCJpZCI6IjY1OWMwOGU4NzJhYTNkZTUwYTAwMjlkNiIsImlhdCI6MTcwNDcyNDczMiwiZXhwIjoxNzA1NTg4NzMyfQ.BoHZP3H7ishxi0Zo9wNcu2Og4hugev4kxPfkRrJu0sI
+Content-Type: application/json
+
+{
+  "text": "Тесnnт",
+  "rating": 2,
+  "date": "2023-01-03T13:10:22.728Z",
+  "offerId": "659c4eb854b34e967a0c934b"
+}
+
+###
+
+## Получить список комментариев к офферу по id оффера
+GET http://localhost:4000/comments/659c4eb854b34e967a0c934b HTTP/1.1
+
+###

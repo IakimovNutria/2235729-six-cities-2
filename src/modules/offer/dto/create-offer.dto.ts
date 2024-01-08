@@ -5,16 +5,23 @@ import {
   IsInt,
   IsNumber,
   IsObject,
-  IsString, Length,
+  IsString,
   MaxLength,
-  MinLength
+  MinLength,
+  Min,
+  Max,
+  IsEnum,
+  ArrayNotEmpty,
+  Matches,
+  ArrayMinSize,
+  ArrayMaxSize,
 } from 'class-validator';
 import { City } from '../../../types/city.type.js';
 import { Housing } from '../../../types/housing.type.js';
 import { Facility } from '../../../types/facility.type.js';
 import { Coordinates } from '../../../types/coordinates.type.js';
 import { CreateOfferMessage } from './create-offer-message.js';
-import { User } from '../../../types/user.type.js';
+import { imageRegExp } from '../../../constants/image.js';
 
 export class CreateOfferDto {
   @MinLength(10, { message: CreateOfferMessage.name.minLength })
@@ -32,42 +39,51 @@ export class CreateOfferDto {
     city!: City;
 
   @IsString({ message: CreateOfferMessage.previewImg.invalidFormat })
+  @Matches(imageRegExp, { message: CreateOfferMessage.previewImg.invalidFormat })
     previewImg!: string;
 
   @IsArray({ message: CreateOfferMessage.images.invalidFormat })
+  @Matches(imageRegExp, { each:true, message: CreateOfferMessage.images.invalidItem })
+  @ArrayMinSize(6, { message: CreateOfferMessage.images.invalidCount })
+  @ArrayMaxSize(6, { message: CreateOfferMessage.images.invalidCount })
     images!: string[];
 
-  @IsBoolean({ message: CreateOfferMessage.flagIsPremium.invalidFormat })
-    flagIsPremium!: boolean;
+  @IsBoolean({ message: CreateOfferMessage.isPremium.invalidFormat })
+    isPremium!: boolean;
 
-  @IsBoolean({ message: CreateOfferMessage.flagIsFavourites.invalidFormat })
-    flagIsFavourites!: boolean;
+  @IsBoolean({ message: CreateOfferMessage.isFavourites.invalidFormat })
+    isFavourite!: boolean;
 
-  @IsNumber({}, { message: CreateOfferMessage.rating.invalidFormat })
-  @Length(1, 5, { message: CreateOfferMessage.rating.lengthField })
-    rating!: 1 | 2 | 3 | 4 | 5;
+  @IsNumber({ maxDecimalPlaces: 1 }, { message: CreateOfferMessage.rating.invalidFormat })
+  @Min(1, { message: CreateOfferMessage.rating.invalidNumber })
+  @Max(5, { message: CreateOfferMessage.rating.invalidNumber })
+    rating!: number;
 
-  @IsString({ message: CreateOfferMessage.typeHousing.invalidFormat })
-    typeHousing!: Housing;
+  @IsString({ message: CreateOfferMessage.housingType.invalidFormat })
+  @IsEnum(Housing, { message: CreateOfferMessage.housingType.invalidString })
+    housingType!: Housing;
 
-  @IsInt({ message: CreateOfferMessage.countRooms.invalidFormat })
-  @Length(1, 8, { message: CreateOfferMessage.countRooms.lengthField })
-    countRooms!: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  @IsInt({ message: CreateOfferMessage.roomsCount.invalidFormat })
+  @Min(1, { message: CreateOfferMessage.roomsCount.invalidNumber })
+  @Max(8, { message: CreateOfferMessage.roomsCount.invalidNumber })
+    roomsCount!: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
-  @IsInt({ message: CreateOfferMessage.countPeople.invalidFormat })
-  @Length(1, 10, { message: CreateOfferMessage.countPeople.lengthField })
-    countPeople!: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  @IsInt({ message: CreateOfferMessage.guestsCount.invalidFormat })
+  @Min(1, { message: CreateOfferMessage.guestsCount.invalidNumber })
+  @Max(10, { message: CreateOfferMessage.guestsCount.invalidNumber })
+    guestsCount!: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
   @IsNumber({}, { message: CreateOfferMessage.price.invalidFormat })
-  @Length(100, 100000, { message: CreateOfferMessage.price.lengthField })
+  @Min(100, { message: CreateOfferMessage.price.invalidNumber })
+  @Max(10000, { message: CreateOfferMessage.price.invalidNumber })
     price!: number;
 
-  @IsString({ message: CreateOfferMessage.conveniences.invalidFormat })
-    conveniences!: Facility;
+  @IsArray({ message: CreateOfferMessage.facilities.invalidFormat })
+  @IsEnum(Facility, { each: true, message: CreateOfferMessage.facilities.invalidItem })
+  @ArrayNotEmpty({ message: CreateOfferMessage.facilities.notEmpty })
+    facilities!: Facility[];
 
-  user!: User;
-
-  countComments!: number;
+  author!: string;
 
   @IsObject({ message: CreateOfferMessage.coordinates.invalidFormat })
     coordinates!: Coordinates;

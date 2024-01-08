@@ -13,22 +13,22 @@ export class FullOfferRdo {
   public description!: string;
 
   @Expose()
-  public publicationDate!: Date;
+  public date!: Date;
 
   @Expose()
   public city!: City;
 
   @Expose()
-  public previewImage!: string;
+  public previewImg!: string;
 
   @Expose()
   public images!: string[];
 
   @Expose()
-  public premium!: boolean;
+  public isPremium!: boolean;
 
   @Expose()
-  public favorite = true;
+  public isFavorite!: boolean;
 
   @Expose()
   public rating!: number;
@@ -37,7 +37,7 @@ export class FullOfferRdo {
   public housingType!: Housing;
 
   @Expose()
-  public roomCount!: number;
+  public roomsCount!: number;
 
   @Expose()
   public guestCount!: number;
@@ -49,7 +49,7 @@ export class FullOfferRdo {
   public facilities!: Facility[];
 
   @Expose()
-  public offerAuthor!: UserType;
+  public author!: UserType;
 
   @Expose()
   public commentsCount!: number;

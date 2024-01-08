@@ -34,7 +34,7 @@ export class OfferService implements OfferServiceInterface {
     return this.offerModel
       .find()
       .sort({ createdAt: Sort.Down })
-      .populate('userId')
+      .populate('author')
       .limit(limit)
       .exec();
   }
@@ -42,16 +42,16 @@ export class OfferService implements OfferServiceInterface {
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
-      .populate('userId')
+      .populate('author')
       .exec();
   }
 
   public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({ city: city, premium: true })
+      .find({ city: city, isPremium: true })
       .sort({ createdAt: Sort.Down })
       .limit(MAX_PREMIUM_OFFERS_COUNT)
-      .populate('userId')
+      .populate('author')
       .exec();
   }
 
@@ -61,13 +61,12 @@ export class OfferService implements OfferServiceInterface {
         commentsCount: 1,
       } })
       .exec();
-
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true })
-      .populate('userId')
+      .populate('author')
       .exec();
   }
 

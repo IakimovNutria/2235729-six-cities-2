@@ -14,6 +14,8 @@ import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { ValidateDtoMiddleware } from '../../core/middleware/validate-dto.middleware.js';
 import { PrivateRouteMiddleware } from '../../core/middleware/private-route.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../core/middleware/validate-objectId.middleware.js';
+import { ParamOfferId } from '../../types/param-offerid.type.js';
+import { DocumentExistsMiddleware } from '../../core/middleware/document-exists.js';
 
 @injectable()
 export class CommentController extends Controller {
@@ -32,8 +34,17 @@ export class CommentController extends Controller {
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
         new PrivateRouteMiddleware(),
-        new ValidateDtoMiddleware(CreateCommentDto)
+        new ValidateDtoMiddleware(CreateCommentDto),
       ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.getComments,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
     });
   }
 
@@ -46,8 +57,14 @@ export class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.createForOffer({ ...body, userId: tokenPayload.id });
+    const comment = await this.commentService.createForOffer({ ...body, author: tokenPayload.id });
     await this.offerService.incComment(body.offerId);
     this.created(res, fillDTO(CommentRdo, comment));
+  }
+
+  public async getComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+    const comments = await this.commentService.findByOfferId(params.offerId);
+
+    this.ok(res, fillDTO(CommentRdo, comments));
   }
 }

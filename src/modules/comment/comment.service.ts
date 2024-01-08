@@ -21,13 +21,13 @@ export class CommentService implements CommentServiceType {
     const offerId = dto.offerId;
     await this.offerService.incComment(offerId);
 
-    const allRating = this.commentModel.find({ offerId }).select('rating');
     const offer = await this.offerService.findById(offerId);
 
     const count = offer?.commentsCount ?? 1;
-    const newRating = allRating['rating'] / (count);
+    const rating = offer?.rating ?? 0;
+    const newRating = (rating + dto.rating) / count;
     await this.offerService.updateRating(offerId, newRating);
-    return comment.populate('authorId');
+    return comment;
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[]> {
