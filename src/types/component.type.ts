@@ -11,6 +11,8 @@ export enum Component {
   OfferController = 'OfferController',
   CommentService = 'CommentService',
   CommentModel = 'CommentModel',
+  AuthService = 'AuthService',
   ExceptionFilter = 'ExceptionFilter',
+  AuthExceptionFilter = 'AuthExceptionFilter',
   CommentController = 'CommentController',
 }
